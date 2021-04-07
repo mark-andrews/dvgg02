@@ -4,7 +4,7 @@ These are password protected, and you will have been given this password in the 
 # Day 1
 
 * [Session 1](https://vimeo.com/533976680)
-* Session 2
+* [Session 2](https://vimeo.com/534074294)
 * Session 3
 
 # Day 2
