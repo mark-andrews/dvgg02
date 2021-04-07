@@ -1,0 +1,80 @@
+---
+title: "Data Visualization"
+author: |
+  | Mark Andrews
+  | Psychology Department, Nottingham Trent University
+  | 
+  | \faEnvelopeO\  ```mark.andrews@ntu.ac.uk```
+fontsize: 10pt
+output:
+ beamer_presentation:
+  keep_tex: true
+  fonttheme: "serif"
+  includes:
+   in_header: preamble.tex
+bibliography: mjandrews.bib
+biblio-style: apalike     
+---
+
+
+```{r, echo=F}
+knitr::opts_chunk$set(echo = F, prompt = F, warning = F, message = F, comment='#>')
+# Thanks to 
+# https://github.com/ramnathv/slidify/issues/189#issuecomment-15850008
+hook1 <- function(x){ gsub("```\n*```r*\n*", "", x) }
+hook2 <- function(x){ gsub("```\n+```\n", "", x) }
+knitr::knit_hooks$set(document = hook1)
+```
+
+```{r}
+library(tidyverse)
+library(knitr)
+theme_set(theme_classic())
+```
+
+# The aim of data visualization
+
+* Rather than being a means to add some eye-candy or ornamentation to otherwise dull reports or slides, the prupose of visualization is to allow us explore data and find patterns that would easily be missed were we to rely only on numerical summary statistics.
+* A classic illustration of this *Anscombe's quartet* [@anscombe1973graphs]:
+```{r get_quartet, echo=F}
+quartet <- read_csv('../data/quartet.csv')
+quartet %>% 
+  group_by(set) %>% 
+  summarise(mean(x), mean(y), sd(x), sd(y), cor(x,y)) %>% 
+  kable(digits=2)
+```
+
+# 
+
+```{r plot_quartet, echo=F, fig.width=4, fig.asp=0.75, fig.align='center'}
+quartet %>% 
+  ggplot(mapping = aes(x = x, y = y)) +
+  geom_point(size=0.5) +
+  stat_smooth(method = 'lm', se = F, fullrange = T, size = 0.5) +
+  facet_wrap(~ set) +
+  theme_bw()
+```
+
+# The aim of data visualization
+
+* A key characteristic of data visualization, therefore, is that "it forces us to notice what we never expected to see" [@tukey1977exploratory].
+* In other words, data visualization is not simply a means to graphically illustrate what we already know, but to reveal patterns and structures in the data.
+* @hartwig1979exploratory state we that we should be guided by principles of *scepticism* and *openness*; we ought to be sceptical to the possibility that any visualization may obscure or misrepresent our data, and we should be open to the possibility of patterns and structures that we were not expecting.
+
+# Some guiding principles for visualization
+
+Some guiding principles for visualization mentioned by Edward R. Tufte in his *Visual Display of Quantitative Information* [@tufte1983visual] are the following.
+
+* *Above all else show the data*
+* *Avoid distorting what the data have to say*
+* *Present many numbers in a small space*
+* *Encourage the eye to compare different pieces of data*
+* *Reveal the data at several levels of detail, from a broad overview to the fine structure*
+
+# Some major visualization tools
+
+* *Histograms, density plots, bar plots*: These are used to display the distribution of values of continuous and discrete variables.
+* *Boxplots*: Like histograms and density plots, boxplots (or box-and-whisker plots) display the distribution of values of continuous variables. However, they are more closely tied to robust statistical descriptions and so deserve to be treated as a class onto themselves.
+* *Scatterplots*: Scatterplots and their variants such as *bubbleplots* are used to display bivariate data, or the relationships between two variables. Usually, scatterplots are used in cases where both variables are continuous, but may also be used, though perhaps with additional modification, when one variable is discrete.
+
+# References
