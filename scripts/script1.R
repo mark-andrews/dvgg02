@@ -360,3 +360,52 @@ ggplot(ToothGrowth,
 ggplot(weight_df,
        mapping = aes(x = height, y = weight)
 ) + geom_point()
+
+ggplot(weight_df,
+       mapping = aes(x = height, y = weight)
+) + geom_point(size = 0.5)
+
+ggplot(weight_df,
+       mapping = aes(x = height, y = weight)
+) + geom_point(alpha = 0.5, size = 0.7)
+
+ggplot(weight_df,
+       mapping = aes(x = height, y = weight, colour = gender)
+) + geom_point()
+
+# colour coding by a continuous variable
+ggplot(weight_df,
+       mapping = aes(x = height, y = weight, colour = race)
+) + geom_point()
+
+
+# colour coding by a discrete variable with seven values
+ggplot(weight_df,
+       mapping = aes(x = height, y = weight, colour = factor(race))
+) + geom_point()
+
+# colour coding by a discrete variable with two values
+ggplot(weight_df,
+       mapping = aes(x = height, 
+                     y = weight, 
+                     colour = gender)
+) + geom_point() +
+  geom_rug()
+
+# colour coding by a discrete variable with two values
+ggplot(weight_df,
+       mapping = aes(x = height, 
+                     y = weight, 
+                     colour = gender)
+) + geom_point() +
+  geom_rug(size = 0.1, alpha = 0.5)
+
+library(ggExtra)
+
+p8 <- ggplot(weight_df,
+             mapping = aes(x = height, 
+                           y = weight, 
+                           colour = gender)
+) + geom_point() 
+
+ggMarginal(p8)
