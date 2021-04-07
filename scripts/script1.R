@@ -96,3 +96,267 @@ weight_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/dvgg02/mas
 ggplot(weight_df, 
        mapping = aes(x = weight)
 ) + geom_histogram()
+
+# histogram of weight, usings bins = 10
+ggplot(weight_df, 
+       mapping = aes(x = weight)
+) + geom_histogram(bins = 10)
+
+ggplot(weight_df, 
+       mapping = aes(x = weight)
+) + geom_histogram(bins = 50)
+
+ggplot(weight_df, 
+       mapping = aes(x = weight)
+) + geom_histogram(binwidth = 2)
+
+ggplot(weight_df, 
+       mapping = aes(x = weight)
+) + geom_histogram(binwidth = 2, colour = 'white')
+
+
+# multiple histogram; one per each gender
+ggplot(weight_df, 
+       mapping = aes(x = weight, fill = gender)
+) + geom_histogram(binwidth = 2, colour = 'white')
+
+# multiple histogram; one per each race
+ggplot(weight_df, 
+       mapping = aes(x = weight, fill = factor(race)),
+) + geom_histogram(binwidth = 2, colour = 'white')
+
+# multiple histogram; one per each gender
+ggplot(weight_df, 
+       mapping = aes(x = weight, fill = gender)
+) + geom_histogram(binwidth = 2, colour = 'white', position = 'fill')
+
+# multiple histogram; one per each gender
+ggplot(weight_df, 
+       mapping = aes(x = weight, fill = gender)
+) + geom_histogram(binwidth = 2, colour = 'white', position = 'dodge')
+
+# multiple histogram; one per each gender; side by side
+ggplot(weight_df, 
+       mapping = aes(x = weight, fill = gender)
+) + geom_histogram(bins = 10, colour = 'white', position = 'dodge')
+
+# one on top of the other style, aka "identity"
+ggplot(weight_df, 
+       mapping = aes(x = weight, fill = gender)
+) + geom_histogram(binwidth = 2, 
+                   colour = 'white', 
+                   position = 'identity')
+
+# make fill transparent, and change colour of border
+ggplot(weight_df, 
+       mapping = aes(x = weight, colour = gender)
+) + geom_histogram(binwidth = 2, 
+                   fill = NA,
+                   position = 'identity')
+
+# change transparency for fill etc using alpha
+ggplot(weight_df, 
+       mapping = aes(x = weight, fill = gender)
+) + geom_histogram(binwidth = 2, 
+                   colour = 'white', 
+                   alpha = 0.8,
+                   position = 'identity')
+
+
+
+# bar plots ---------------------------------------------------------------
+
+titanic_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/dvgg02/master/data/TitanicSurvival.csv")
+
+# a bar plot showing number of observation per each 
+# value of the variable "survived"
+ggplot(titanic_df,
+       mapping = aes(x = survived)
+) + geom_bar()
+
+group_by(titanic_df, survived) %>% 
+  summarize(n = n())
+
+# a bar plot showing number of observation per each 
+# value of the variable "survived", coloured by sex
+ggplot(titanic_df,
+       mapping = aes(x = survived, fill = sex)
+) + geom_bar()
+
+
+# a bar plot showing number of observation per each 
+# value of the variable "sex", coloured by "survived"
+ggplot(titanic_df,
+       mapping = aes(x = sex, fill = survived)
+) + geom_bar()
+
+# a bar plot showing proportion of survivors per sex
+ggplot(titanic_df,
+       mapping = aes(x = sex, fill = survived)
+) + geom_bar(position = 'fill')
+
+# number of survivors and non-survivors, per each sex
+ggplot(titanic_df,
+       mapping = aes(x = sex, fill = survived)
+) + geom_bar(position = 'dodge')
+
+ggplot(titanic_df,
+       mapping = aes(x = sex, fill = survived)
+) + geom_bar(position = 'identity', alpha = 0.65)
+
+# barplots without the counting
+carprice_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/dvgg02/master/data/carprice.csv")
+
+carprice_avg <- group_by(carprice_df, Type) %>% 
+  summarize(price = mean(Price))
+
+# this is not quite right
+ggplot(carprice_avg,
+       mapping = aes(x = Type)
+) + geom_bar()
+
+# to use the y axis value, use geom_bar with stat = 'identity'
+ggplot(carprice_avg,
+       mapping = aes(x = Type, y = price)
+) + geom_bar(stat = 'identity')
+
+# or else 
+ggplot(carprice_avg,
+      mapping = aes(x = Type, y = price)
+) + geom_col()
+
+rats_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/dvgg02/master/data/FatRats.csv")
+
+ggplot(rats_df,
+       mapping = aes(x = Source, y = Gain, fill = Protein)
+) + geom_col()
+
+group_by(rats_df, Source) %>% summarize(sum(Gain))
+ggplot(rats_df,
+       mapping = aes(x = Source, y = Gain, fill = Protein)
+) + geom_col(position = 'dodge')
+
+ggplot(rats_df,
+       mapping = aes(x = Source, y = Gain, fill = Protein)
+) + geom_col(position = 'identity', alpha = 0.6)
+
+
+# Boxplot -----------------------------------------------------------------
+
+ggplot(swiss, 
+       mapping = aes(x = '', y = Fertility)
+) + geom_boxplot()
+
+ggplot(swiss, 
+       mapping = aes(y = Fertility)
+) + geom_boxplot()
+
+ggplot(swiss, 
+       mapping = aes(x = '', y = Fertility)
+) + geom_boxplot(width = 0.1)
+
+ggplot(swiss, 
+       mapping = aes(x = '', y = Fertility)
+) + geom_boxplot(width = 0.1) + coord_flip()
+
+ggplot(swiss, 
+       mapping = aes(x = '', y = Fertility)
+) + geom_boxplot(width = 0.1) + coord_flip() + geom_point()
+
+ggplot(swiss, 
+       mapping = aes(x = '', y = Fertility)
+) + geom_boxplot(width = 0.1) + 
+  coord_flip() + 
+  geom_jitter()
+
+ggplot(swiss, 
+       mapping = aes(x = '', y = Fertility)
+) + geom_boxplot(width = 0.1) + 
+  coord_flip() + 
+  geom_jitter(width = 0.05)
+
+# make the outliers invisible
+ggplot(swiss, 
+       mapping = aes(x = '', y = Fertility)
+) + geom_boxplot(width = 0.1, outlier.shape = NA) + 
+  coord_flip() + 
+  geom_jitter(width = 0.05)
+
+ggplot(swiss, 
+       mapping = aes(x = '', y = Fertility)
+) + geom_boxplot(width = 0.1, outlier.shape = NA) + 
+  geom_jitter(width = 0.05) +
+  geom_rug(sides = 'l') +
+  coord_flip()
+
+
+swiss_df <- swiss %>%
+  rownames_to_column('province') %>% 
+  mutate(is_catholic = Catholic > 50)
+  
+
+ggplot(swiss_df,
+       mapping = aes(x = is_catholic, y = Fertility)
+) + geom_boxplot(width = 0.2, outlier.shape = NA) + 
+  geom_jitter(width = 0.05, size = 0.67)
+
+ggplot(swiss_df,
+       mapping = aes(x = is_catholic, 
+                     y = Fertility,
+                     colour = is_catholic)
+) + geom_boxplot(width = 0.2, outlier.shape = NA) + 
+  geom_jitter(width = 0.05, size = 0.67)
+
+ggplot(swiss_df,
+       mapping = aes(x = is_catholic, 
+                     y = Fertility,
+                     fill = is_catholic)
+) + geom_boxplot(width = 0.2, outlier.shape = NA) + 
+  geom_jitter(width = 0.05, size = 0.67)
+
+ggplot(swiss_df,
+       mapping = aes(x = is_catholic, 
+                     y = Fertility,
+                     fill = is_catholic)
+) + geom_boxplot(width = 0.2,
+                 varwidth = TRUE,
+                 outlier.shape = NA) + 
+  geom_jitter(width = 0.05, size = 0.67)
+
+ggplot(swiss_df,
+       mapping = aes(x = is_catholic, 
+                     y = Fertility,
+                     fill = is_catholic)
+) + geom_boxplot(width = 0.2,
+                 varwidth = TRUE,
+                 notch = TRUE,
+                 outlier.shape = NA) + 
+  geom_jitter(width = 0.05, size = 0.67)
+
+
+# this does not do what we want ...
+ggplot(ToothGrowth,
+       mapping = aes(x = dose, y = len, colour = supp)
+) + geom_boxplot()
+
+# so, we need to discretize the x variable
+ggplot(ToothGrowth,
+       mapping = aes(x = factor(dose), y = len, colour = supp)
+) + geom_boxplot()
+
+# or better, use group
+ggplot(ToothGrowth,
+       mapping = aes(x = factor(dose), 
+                     y = len, 
+                     colour = supp, 
+                     group = interaction(dose, supp))
+) + geom_boxplot(outlier.shape = NA) +
+  geom_jitter(position = position_jitterdodge(jitter.width = 0.25), 
+              size = 0.5)
+
+
+# scatterplot -------------------------------------------------------------
+
+ggplot(weight_df,
+       mapping = aes(x = height, y = weight)
+) + geom_point()
