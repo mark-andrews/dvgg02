@@ -409,3 +409,145 @@ p8 <- ggplot(weight_df,
 ) + geom_point() 
 
 ggMarginal(p8)
+
+p9 <- ggplot(weight_df,
+             mapping = aes(x = height, 
+                           y = weight, 
+                           colour = gender)
+) + geom_point() +
+  theme_classic() +
+  theme(legend.position = 'bottom')
+
+ggMarginal(p9,
+           type = 'histogram',
+           groupFill = TRUE,
+           groupColour = TRUE,
+           position = 'identity',
+           bins = 50)
+
+ggMarginal(p9,
+           type = 'boxplot',
+           groupFill = TRUE,
+           position = 'identity',
+           width = 0.5,
+           groupColour = TRUE)
+
+p10 <- p9 + geom_rug(size = 0.1, alpha = 0.5)
+
+ggMarginal(p10,
+           type = 'histogram',
+           groupFill = TRUE,
+           groupColour = TRUE,
+           position = 'identity',
+           bins = 50)
+
+
+
+# Scatterplot smoothing ---------------------------------------------------
+
+ggplot(swiss_df,
+       mapping = aes(x = Examination, y = Fertility)
+) + geom_point() + stat_smooth(method = 'loess', 
+                               formula = y ~ x)
+
+ggplot(swiss_df,
+       mapping = aes(x = Examination, y = Fertility)
+) + geom_point() + stat_smooth(method = 'loess', 
+                               formula = y ~ x,
+                               level = 0.5,
+                               n = 10)
+
+ggplot(swiss_df,
+       mapping = aes(x = Examination, y = Fertility)
+) + geom_point() + stat_smooth(method = 'loess', 
+                               formula = y ~ x,
+                               se = F,
+                               n = 10)
+
+ggplot(swiss_df,
+       mapping = aes(x = Examination, y = Fertility)
+) + geom_point() + stat_smooth(method = 'lm', 
+                               formula = y ~ x,
+                               se = F)
+
+
+ggplot(swiss_df,
+       mapping = aes(x = Examination, 
+                     y = Fertility, 
+                     colour = is_catholic)
+) + geom_point() +
+  stat_smooth(method = 'lm',
+              formula = y ~ x,
+              se = F)
+
+
+ggplot(swiss_df,
+       mapping = aes(x = Examination, 
+                     y = Fertility, 
+                     colour = is_catholic)
+) + geom_point() +
+  stat_smooth(method = 'lm',
+              formula = y ~ x,
+              fullrange = TRUE,
+              se = F)
+
+# one line of best fit for all 
+ggplot(swiss_df,
+       mapping = aes(x = Examination, 
+                     y = Fertility)
+) + geom_point(aes(colour = is_catholic)) +
+  stat_smooth(method = 'lm',
+              formula = y ~ x,
+              fullrange = TRUE,
+              colour = 'grey',
+              se = F)
+
+
+# put lines of best fit on top of everything else in p10
+p11 <- p10 + stat_smooth(method = 'lm', 
+                         se = F, 
+                         fullrange = T,
+                         formula = y ~ x)
+
+ggMarginal(p11,
+           type = 'histogram',
+           groupFill = TRUE,
+           groupColour = TRUE,
+           position = 'identity',
+           bins = 50)
+
+
+# adding labels -----------------------------------------------------------
+
+ggplot(swiss_df,
+       aes(x = Examination, y = Fertility, label = province)
+) + geom_text()
+       
+
+ggplot(swiss_df,
+       aes(x = Examination, y = Fertility, label = province)
+) + geom_point(alpha = 0.5) + geom_text()
+
+library(ggrepel)
+ggplot(swiss_df,
+       aes(x = Examination, 
+           y = Fertility, 
+           label = province)
+) + geom_point(alpha = 0.5) + 
+  geom_text_repel()
+
+ggplot(swiss_df,
+       aes(x = Examination, 
+           y = Fertility, 
+           label = province)
+) + geom_point(alpha = 0.5) + 
+  geom_text_repel()
+
+# bubble plot -------------------------------------------------------------
+
+
+ggplot(midwest,
+       aes(x = percollege, 
+           y = percprof, 
+           size = popdensity)
+) + geom_point()
