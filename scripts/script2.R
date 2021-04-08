@@ -120,3 +120,125 @@ ggplot(nottingham_df,
        mapping = aes(x = year, y = month, fill = value)
 ) + geom_tile() + scale_fill_gradient(low = 'yellow',
                                       high = 'red')
+
+# spatial maps ------------------------------------------------------------
+
+mapdata <- read_csv("https://raw.githubusercontent.com/mark-andrews/dvgg02/master/data/local_authority_map_data.csv")
+
+ggplot(mapdata,
+       mapping = aes(x = long, 
+                     y = lat, 
+                     group = group)
+) + geom_polygon(colour = 'white', 
+                 fill = 'grey60',
+                 size = 0.1) + 
+  coord_equal()
+
+referendum_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/dvgg02/master/data/EU-referendum-result-data.csv")
+
+referendum_map_df <- inner_join(mapdata, 
+                                referendum_df,
+                                by = c('id' = 'Area_Code')
+)
+
+ggplot(referendum_map_df,
+       mapping = aes(x = long, 
+                     y = lat, 
+                     group = group,
+                     fill = Pct_Leave),
+) + geom_polygon(colour = 'white', 
+                 size = 0.1) + 
+  coord_equal() +
+  scale_fill_distiller(palette = 3,
+                       limits = c(0, 80)) +
+  theme_minimal()
+                       
+
+# Correlation matrices ----------------------------------------------------
+
+library(GGally)
+ggcorr(mtcars)
+ggcorr(mtcars, 
+       label = TRUE)
+
+ggcorr(mtcars,
+       label = TRUE,
+#       nbreaks = 10,
+       palette = 'Greys')
+
+ggcorr(select(mtcars, 1:5), label = T)
+
+ggpairs(select(mtcars, 1:5))
+
+ggpairs(select(mtcars, 1:5),
+        diag = list(continuous = 'barDiag'),
+)
+
+ggpairs(flea, 
+        aes(fill = species, colour = species),
+        columns = 2:7)
+  
+data(tips, package = 'reshape')      
+tips_df <- select(tips, 1:4)
+ggpairs(tips_df)
+
+
+ggpairs(tips_df,
+        upper = list(continuous = 'points',
+                     combo = 'box_no_facet'),
+        lower = list(continuous = 'density',
+                     combo = 'dot_no_facet'),
+)
+
+
+# fine control ------------------------------------------------------------
+
+p12 <- ggplot(weight_df,
+              mapping = aes(x = height, 
+                            y = weight, 
+                            colour = gender)
+) + geom_point()
+
+p12 + theme_classic()
+p12 + theme_minimal()
+p12 + theme_bw()
+p12 + theme_dark()
+
+library(ggthemes)
+
+p12 + theme_fivethirtyeight()
+p12 + theme_economist()
+p12 + theme_economist_white()
+p12 + theme_excel()
+p12 + theme_excel_new()
+p12 + theme_stata()
+p12 + theme_tufte()
+
+p13 <- p12 + theme_classic()
+p13 + xlab('Height (cm)') + ylab('Weight (kg)')
+p13 + labs(x = "Height (cm)",
+           y = "Weight (kg)")
+p13 + ggtitle("A scatterplot of height and weight")
+
+library(latex2exp)
+TeX('$\\alpha$')
+
+p13 + xlab(TeX("$\\sqrt{\\alpha}$"))
+
+p13 + scale_colour_manual(values = c('blue', 'green'))
+
+p14 <- ggplot(weight_df,
+              aes(x = weight, fill = gender)
+) + geom_histogram(binwidth = 3)
+
+p14 + scale_fill_manual(values = c('green', 'red'))
+
+ggplot(weight_df,
+       mapping = aes(x = height, 
+                     y = weight)
+) + geom_point() + scale_colour_manual(values = c('blue'))
+
+p13 + theme(legend.position = 'bottom')
+p13 + theme(legend.position = 'top')
+p13 + theme(legend.position = 'left')
+p13 + theme(legend.position = 'none')
