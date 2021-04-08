@@ -11,5 +11,5 @@ These are password protected, and you will have been given this password in the 
 
 * [Session 1](https://vimeo.com/534437036)
 * [Session 2](https://vimeo.com/534513325)
-* Session 3
+* [Session 3](https://vimeo.com/534592250)
 
