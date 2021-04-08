@@ -551,3 +551,55 @@ ggplot(midwest,
            y = percprof, 
            size = popdensity)
 ) + geom_point()
+
+# facetting ---------------------------------------------------------------
+
+# multiple histogram; one per each gender
+ggplot(weight_df, 
+       mapping = aes(x = weight)
+) + geom_histogram(binwidth = 2, colour = 'white') +
+  facet_wrap(~gender)
+
+sleep_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/dvgg02/master/data/sleepstudy.csv")
+
+ggplot(sleep_df,
+       mapping = aes(x = Days, y = Reaction)
+) + geom_point()
+
+ggplot(sleep_df,
+       mapping = aes(x = Days, 
+                     y = Reaction, 
+                     colour = Subject)
+) + geom_point() +
+  stat_smooth(method = 'lm', 
+              se = F, 
+              formula = y~x) +
+  facet_wrap(~Subject, 
+             ncol = 7)
+
+ggplot(weight_df,
+       mapping = aes(x = height, y = weight)
+) + geom_point() +
+  stat_smooth(method = 'lm', 
+              se = F, 
+              formula = y ~ x) +
+  facet_wrap(~gender)
+
+
+group_by(weight_df, gender, race) %>% summarize(n = n())
+
+
+ggplot(filter(weight_df, race <= 4),
+       mapping = aes(x = height, y = weight)
+) + geom_point() +
+  stat_smooth(method = 'lm', 
+              se = F, 
+              formula = y ~ x) +
+  facet_grid(gender ~ race)
+
+weight_df %>% 
+  filter(race <= 4) %>% 
+  ggplot(mapping = aes(x = height, 
+                       y = weight)) + 
+  geom_point() +
+  facet_grid(race ~ gender)
