@@ -242,3 +242,46 @@ p13 + theme(legend.position = 'bottom')
 p13 + theme(legend.position = 'top')
 p13 + theme(legend.position = 'left')
 p13 + theme(legend.position = 'none')
+
+p13 + labs(x = 'Height', colour = 'Gender')
+p14 <- p13 + theme(legend.position = 'bottom')
+p14 + theme(legend.title = element_text(size = 12),
+            legend.text = element_text(size = 8),
+            axis.title.x = element_text(size = 20),
+            axis.title.y = element_text(face = 'italic', size = 15),
+            # axis.text.y = element_text(size = 24),
+            # axis.text.x = element_text(size = 8, angle = 90),
+            axis.text = element_blank(),
+            axis.ticks = element_blank()
+)
+            
+ggplot(sleep_df,
+       aes(x = Days, y = Reaction)
+) + geom_point() + 
+  scale_x_continuous(breaks = seq(0, 9)) +
+  scale_y_continuous(breaks = c(200, 250, 350, 450, 460))
+
+ggplot(weight_df,
+       aes(x = gender, y = height)
+) + geom_boxplot() + 
+  scale_x_discrete(labels = c("Female" = 'Women',
+                              "Male" = "Men"))
+
+
+diamonds2 <- sample_frac(diamonds, 0.01)
+p15 <- ggplot(diamonds2,
+       mapping = aes(x = carat, 
+                     y = price,
+                     colour = cut)
+) + geom_point() + theme_classic()
+
+# Qualitative palettes
+p15 + scale_colour_brewer(palette = 'Set1')
+p15 + scale_color_brewer(palette = 'Set2')
+p15 + scale_color_brewer(palette = 'Accent')
+
+# diverging
+p15 + scale_color_brewer(palette = 'RdBu')
+
+p15 + scale_colour_grey()
+p15 + scale_color_viridis_d(option = 'inferno')

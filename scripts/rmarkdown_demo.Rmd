@@ -1,0 +1,44 @@
+---
+title: "My First RMarkdown Doc"
+author: "Mark Andrews"
+date: "April 8, 2021"
+output:
+  word_document: default
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+# Introduction
+
+We are investigating whether the effect is real.
+
+# Results
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.cap="This is the diamonds data.", fig.align="center", fig.height=6}
+library(tidyverse)
+library(cowplot)
+diamonds2 <- sample_frac(diamonds, 0.01)
+p15 <- ggplot(diamonds2,
+       mapping = aes(x = carat, 
+                     y = price,
+                     colour = cut)
+) + geom_point() + theme_classic() +scale_colour_brewer(palette = 'Set1')
+
+weight_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/dvgg02/master/data/weight.csv")
+
+p16 <- ggplot(weight_df,
+              aes(x = gender, y = height)
+) + geom_boxplot() + 
+  scale_x_discrete(labels = c("Female" = 'Women',
+                              "Male" = "Men"))
+
+plot_grid(p15, p16, labels = "auto", ncol = 1)
+```
+
+
+
+# Discussion
+
+Our results have shown that the effect is real.
+By the way, the average price of a diamond is `r mean(diamonds2$price)`.
